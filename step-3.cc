@@ -50,20 +50,57 @@ using namespace dealii;
 
 
 
+/**
+ * The Step3 example program solves the Laplace problem on the unit square.
+ */
 class Step3
 {
 public:
+  /** The constructor */
   Step3();
 
+  /**
+   * Run the example step. This function calls make_grid(), setup_system(),
+   * assemble_system(), solve(), and output_results() in order.
+   */
   void run();
 
 
 private:
   void make_grid();
   void setup_system();
+
+  /**
+   * Assemble the stiffness matrix and the right-hand side:
+   * \f{align*}
+   *   a_{ij} = \int_\Omega\nabla\varphi_i\cdot\nabla\varphi_j\text{d}x,
+   *   \quad
+   *   b_i = \int_\Omega\nabla\varphi_i\,f(x)\text{d}x.
+   * \f}
+   *
+   * @pre The setup_system() function must have been called prior to
+   *   calling assemble_system().
+   * @post After assemble_system() has been called, the system_matrix and
+   *   system_rhs contain valid data.
+   * @remark This function is now fully documented.
+   */
   void assemble_system();
+
   void solve();
   void output_results() const;
+
+  /**
+   * Copies bytes from a source memory area to a destination memory area,
+   * where both areas may not overlap.
+   *
+   * @param[out] dest The memory area to copy to.
+   * @param[in]  src  The memory area to copy from.
+   * @param[in]  n    The number of bytes to copy
+   *
+   * @return The function returns void.
+   */
+  void memcpy(void *dest, const void *src, size_t n);
+
 
   Triangulation<2> triangulation;
   FE_Q<2>          fe;
