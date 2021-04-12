@@ -18,3 +18,23 @@ ENDIF()
 DEAL_II_INITIALIZE_CACHED_VARIABLES()
 PROJECT(${TARGET})
 DEAL_II_INVOKE_AUTOPILOT()
+
+#
+# Doxygen configuration:
+#
+
+add_custom_command(
+  OUTPUT ${CMAKE_BINARY_DIR}/doxygen.log
+  COMMAND doxygen ${CMAKE_BINARY_DIR}/doxygen.conf
+    > ${CMAKE_BINARY_DIR}/doxygen.log
+  WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+  DEPENDS
+    ${TARGET_SRC}
+    ${CMAKE_BINARY_DIR}/doxygen.conf
+  COMMENT "Generating documentation via doxygen."
+  VERBATIM
+  )
+
+add_custom_target(doxygen ALL
+  DEPENDS ${CMAKE_BINARY_DIR}/doxygen.log
+  )
